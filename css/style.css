@@ -1,0 +1,122 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9fafb;
+  color: #333;
+}
+
+#app {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+h1 {
+  text-align: center;
+  color: #007bff;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: #333;
+  font-size: 1.6rem;
+  margin-top: 30px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-right: 10px;
+  margin-bottom: 15px;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(2px);
+}
+
+#cursos-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#cursos-table th, #cursos-table td {
+  padding: 12px;
+  text-align: left;
+  font-size: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+#cursos-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+#cursos-table td {
+  background-color: #fafafa;
+}
+
+#cursos-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+#advertencias-list {
+  margin-top: 20px;
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.advertencia-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  color: #d9534f;
+  font-size: 1.1rem;
+}
+
+.advertencia-item:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  #app {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  button {
+    padding: 10px 20px;
+  }
+
+  #cursos-table th, #cursos-table td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}

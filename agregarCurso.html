@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agregar Curso</title>
+  <link rel="stylesheet" href="css/curso.css">
+</head>
+<body>
+  <div>
+    <h1>Agregar Curso</h1>
+    <!-- Formulario para agregar curso -->
+    <form id="add-course-form">
+      <label for="empresa">Empresa:</label>
+      <input type="text" id="empresa" required>
+      
+      <label for="sucursal">Sucursal:</label>
+      <input type="text" id="sucursal" required>
+      
+      <label for="direccion">Dirección:</label>
+      <input type="text" id="direccion" required>
+      
+      <label for="contacto">Contacto:</label>
+      <input type="text" id="contacto" required>
+      
+      <label for="telefono">Teléfono:</label>
+      <input type="tel" id="telefono" pattern="^\+?[0-9]{10,15}$" placeholder="Ej. +1234567890" required>
+      
+      <label for="extension">Extensión (si aplica):</label>
+      <input type="text" id="extension">
+      
+      <label for="correo">Correo:</label>
+      <input type="email" id="correo" required>
+      
+      <label for="celular">Celular:</label>
+      <input type="tel" id="celular" pattern="^\+?[0-9]{10,15}$" placeholder="Ej. +1234567890" required>
+      
+      <label for="horario">Horario:</label>
+      <div id="horario">
+        <label for="dias">Días:</label>
+        <select id="dias" multiple>
+          <option value="Lunes">Lunes</option>
+          <option value="Martes">Martes</option>
+          <option value="Miércoles">Miércoles</option>
+          <option value="Jueves">Jueves</option>
+          <option value="Viernes">Viernes</option>
+          <option value="Sábado">Sábado</option>
+        </select>
+        
+        <label for="hora">Hora:</label>
+        <input type="time" id="hora" required>
+        
+        <label for="duracion">Duración (en horas):</label>
+        <input type="number" id="duracion" min="1" max="24" required>
+      </div>
+      
+      <label for="papeleria">Papelería:</label>
+      <textarea id="papeleria" placeholder="Describe los documentos necesarios (opcional)"></textarea>
+      
+      <label for="equipoSeguridad">Equipo de seguridad:</label>
+      <select id="equipoSeguridad" multiple>
+        <option value="Casco">Casco</option>
+        <option value="Chaleco Reflectante">Chaleco Reflectante</option>
+        <option value="Guantes">Guantes</option>
+        <option value="Lentes de Seguridad">Lentes de Seguridad</option>
+        <option value="Zapatos de Seguridad">Zapatos de Seguridad</option>
+      </select>
+      
+      <label>Subir documentos (opcional):</label>
+      <input type="file" id="documentos" accept=".pdf,.doc,.docx,.xls,.xlsx" multiple>
+      
+      <button type="submit" id="submit-btn">Agregar Curso</button>
+      <button type="button" id="back-btn">Volver</button>
+      
+      <!-- Indicador de carga -->
+      <div id="loading-indicator" style="display: none;">Cargando...</div>
+    </form>
+  </div>
+  
+  <script type="module" src="js/agregarCurso.js"></script>
+  <script type="module" src="js/app.js" defer></script>
+</body>
+</html>
