@@ -1,122 +1,297 @@
-body {
-  font-family: 'Arial', sans-serif;
+/* Estilos Generales */
+* {
   margin: 0;
   padding: 0;
-  background-color: #f9fafb;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fc;
   color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 #app {
-  max-width: 1000px;
-  margin: 20px auto;
+  background-color: #ffffff;
   padding: 30px;
-  background-color: #fff;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  max-width: 1000px;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Títulos */
 h1 {
-  text-align: center;
-  color: #007bff;
-  font-size: 2rem;
+  font-size: 28px;
+  color: #2c3e50;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 h2 {
-  color: #333;
-  font-size: 1.6rem;
+  font-size: 22px;
+  color: #34495e;
   margin-top: 30px;
-  border-bottom: 2px solid #f0f0f0;
-  padding-bottom: 10px;
+}
+
+/* Botones */
+.btn-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
 }
 
 button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  font-size: 1rem;
+  padding: 12px 20px;
+  font-size: 16px;
   cursor: pointer;
-  border-radius: 6px;
-  transition: background-color 0.3s, transform 0.2s;
-  margin-right: 10px;
-  margin-bottom: 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  border: none;
+  width: 48%;
 }
 
-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
+.primary-btn {
+  background-color: #3498db;
+  color: white;
 }
 
-button:active {
-  transform: translateY(2px);
+.primary-btn:hover {
+  background-color: #2980b9;
 }
 
-#cursos-table {
+.secondary-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.secondary-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Estilo para el contenedor de la tabla (div que contiene la tabla) */
+.table-container {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8f9fa; /* Color de fondo para el contenedor */
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave alrededor del div */
+}
+
+/* Tabla */
+table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
 }
 
-#cursos-table th, #cursos-table td {
+/* Estilo de las celdas de la tabla */
+th, td {
   padding: 12px;
   text-align: left;
-  font-size: 1rem;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 
-#cursos-table th {
-  background-color: #007bff;
+/* Estilo de las cabeceras */
+th {
+  background-color: #3498db;
   color: white;
-  font-weight: bold;
 }
 
-#cursos-table td {
-  background-color: #fafafa;
+/* Alternar colores de las filas */
+tbody tr:nth-child(odd) {
+  background-color: #f9f9f9; /* Fila impar */
 }
 
-#cursos-table tr:hover {
-  background-color: #f1f1f1;
+tbody tr:nth-child(even) {
+  background-color: #ffffff; /* Fila par */
 }
 
-#advertencias-list {
-  margin-top: 20px;
-  background-color: #fff;
-  border: 1px solid #f0f0f0;
+/* Efecto de hover sobre las filas */
+tbody tr:hover {
+  background-color: #e0e0e0; /* Color más intenso al pasar el ratón */
+  transition: background-color 0.3s ease;
+}
+
+/* Sombra sutil en las celdas */
+tbody td {
+  font-size: 14px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra suave dentro de las celdas */
+}
+
+/* Resaltar al pasar el ratón sobre las celdas */
+td:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+/* Bordes más marcados para las celdas */
+th, td {
+  border: 1px solid #ddd;
+}
+
+/* Ajustar el color de texto en celdas */
+tbody td {
+  color: #333;
+}
+
+/* Transición en los bordes */
+th, td {
+  transition: border 0.3s ease;
+}
+
+/* Advertencias */
+#warnings-section {
+  margin-top: 30px;
+}
+
+#warnings-list {
   padding: 15px;
-  border-radius: 8px;
+  background-color: #f9e3e3;
+  border-radius: 5px;
+  border: 1px solid #f1c2c2;
+  color: #c0392b;
+  font-size: 14px;
 }
 
-.advertencia-item {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  color: #d9534f;
-  font-size: 1.1rem;
-}
-
-.advertencia-item:last-child {
-  border-bottom: none;
-}
-
+/* Media Queries - Responsive */
 @media (max-width: 768px) {
   #app {
     padding: 15px;
+    margin: 10px;
   }
 
   h1 {
-    font-size: 1.6rem;
+    font-size: 24px;
   }
 
   h2 {
-    font-size: 1.3rem;
+    font-size: 18px;
   }
 
-  button {
-    padding: 10px 20px;
-  }
-
-  #cursos-table th, #cursos-table td {
+  table th, table td {
+    font-size: 12px;
     padding: 10px;
-    font-size: 0.9rem;
   }
+
+  .btn-container {
+    flex-direction: column;
+  }
+
+  .primary-btn, .secondary-btn {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  table th, table td {
+    font-size: 10px;
+    padding: 8px;
+  }
+
+  .primary-btn, .secondary-btn {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+}
+/* Estilos para los botones */
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#add-course-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#add-course-btn:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+#logout {
+  background-color: #ff6f61;
+  color: white;
+}
+
+#logout:hover {
+  background-color: #e55a4e;
+  transform: scale(1.05);
+}
+
+#send-email-btn {
+  background-color: #008CBA;
+  color: white;
+}
+
+#send-email-btn:hover {
+  background-color: #007b8a;
+  transform: scale(1.05);
+}
+
+#advertencias-list {
+  padding: 15px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* Estilo para los contenedores de advertencias */
+#advertencias-list p {
+  margin: 10px 0;
+  font-size: 1.1em;
+  color: #d9534f;
+}
+
+/* Contenedor de búsqueda */
+.search-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Campos de entrada */
+input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  flex: 1;
+}
+
+/* Botones */
+button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Botón de buscar */
+#buscar-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Botón de borrar */
+.borrar {
+  background-color: #dc3545;
+  color: white;
 }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle del Curso</title>
+  <link rel="stylesheet" href="css/cursodetails.css">
+</head>
+<body>
+  <div>
+    <h1>Detalle del Curso</h1>
+    <div id="curso-detalle"></div> <br><br>
+
+    <button id="update-course-btn" class="update-course-btn">Actualizar curso</button>
+
+    <div class="separator"></div>
+
+    <h3>Agregar Técnico</h3>
+    <form id="add-tecnico-form">
+      <label for="tecnico">Técnico:</label>
+      <input type="text" id="tecnico" required>
+      
+      <label for="fecha-toma">Fecha de toma de curso:</label>
+      <input type="date" id="fecha-toma" required>
+      
+      <label for="fecha-vigencia">Fecha de vigencia:</label>
+      <input type="date" id="fecha-vigencia" required>
+      
+      <button type="submit">Agregar Técnico</button>
+    </form>
+
+    <button id="back-btn">Volver</button>
+    
+    
+  </div>
+
+  <script type="module" src="js/detalleCurso.js"></script>
+</body>
+</html>

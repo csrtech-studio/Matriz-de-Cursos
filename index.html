@@ -12,24 +12,40 @@
     <!-- Botón para redirigir a la página de agregar curso -->
     <button id="add-course-btn">Agregar Curso</button>
     <button id="logout">Cerrar sesión</button>
-    
+
+    <h2>Advertencias</h2>
+    <div id="advertencias-list"></div>
+    <button id="send-email-btn" style="display:none;">Enviar Recordatorio por Correo</button>
+
+    <!-- Buscador -->
+    <div class="container">
+      <h2>Buscar Cursos</h2>
+      <div class="search-container">
+        <input type="text" id="buscarEmpresa" placeholder="Buscar por empresa">
+        <input type="text" id="buscarMunicipio" placeholder="Buscar por municipio">
+        <button id="buscar-btn">Buscar</button>
+        <button id="borrar-btn" class="borrar">Borrar</button>
+      </div>
+
     <!-- Contenedores dinámicos -->
     <h2>Lista de Cursos</h2>
     <table id="cursos-table">
       <thead>
         <tr>
           <th>Empresa</th>
-          <th>Técnicos</th>
           <th>Municipio</th>
-          <th>Vigencia del Curso</th>
+          <th>Técnico</th>
+          <th>Status del Curso</th>
         </tr>
       </thead>
       <tbody id="cursos-list"></tbody>
     </table>
-    
-    <h2>Advertencias</h2>
-    <div id="advertencias-list"></div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init("oWV6JPY1pHLk0Dl26");
+  </script>
 
   <script type="module" src="js/app.js"></script>
 </body>

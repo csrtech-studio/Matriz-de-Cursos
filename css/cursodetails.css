@@ -1,0 +1,212 @@
+/* Estilo general del body */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fc;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  flex-direction: column;
+  padding-top: 20px;
+}
+
+/* Título principal */
+h1 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Contenedor principal */
+div {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 900px;
+  width: 90%;
+  margin: 20px auto;
+}
+/* Estilo del contenedor de detalles */
+#curso-detalle {
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+/* Estilo de los párrafos dentro de #curso-detalle */
+#curso-detalle p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 12px 0;
+  color: #34495e;
+}
+
+/* Estilo para los títulos en los párrafos */
+#curso-detalle strong {
+  font-weight: bold;
+  color: #2980b9;
+}
+
+/* Separadores entre secciones */
+.separator {
+  border-top: 1px solid #ecf0f1;
+  margin: 20px 0;
+}
+
+/* Estilo de la tabla de técnicos */
+#curso-detalle table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#curso-detalle table th, #curso-detalle table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  text-align: center;
+}
+
+#curso-detalle table th {
+  background-color: #f8fafc;
+  color: #34495e;
+}
+
+#curso-detalle table td {
+  background-color: #f9f9f9;
+}
+
+/* Estilo de la tabla cuando no hay datos */
+#curso-detalle table td.sin-datos {
+  color: #bdc3c7;
+  text-align: center;
+}
+
+
+  
+  /* Separador entre secciones */
+  .separator {
+    border-top: 1px solid #ecf0f1;
+    margin: 1px 0;
+  }
+  
+  /* Estilo de la tabla de técnicos */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  table th, table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  table th {
+    background-color: #f8fafc;
+    color: rgb(10, 0, 0);
+  }
+  
+  table td {
+    background-color: #f9f9f9;
+  }
+  
+  /* Botón de actualizar curso */
+  #update-course-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    transition: background-color 0.3s;
+    margin-bottom: 20px;
+  }
+  
+  #update-course-btn:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Estilo para el formulario */
+  form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+  }
+  
+  form label {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #7f8c8d;
+  }
+  
+  form input {
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+  }
+  
+  form button {
+    background-color: #2ecc71;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  form button:hover {
+    background-color: #27ae60;
+  }
+  
+  /* Botón de volver */
+  #back-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+  }
+  
+  #back-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Estilo de los campos de fecha */
+  input[type="date"] {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Estilo para los botones dentro del formulario */
+  button[type="submit"] {
+    margin-top: 20px;
+  }
+  
+  

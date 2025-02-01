@@ -1,3 +1,5 @@
+//firebaseConfig.js
+
 export const firebaseConfig = {
   apiKey: "AIzaSyDeuPiNhr7Zriu2nveztT1kVzsi21nYzOM",
   authDomain: "cursos-purifika.firebaseapp.com",
