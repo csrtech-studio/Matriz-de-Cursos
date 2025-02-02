@@ -162,101 +162,112 @@ document.getElementById("borrar-btn").addEventListener("click", function() {
 });
   
 
-  /**
-   * Cargar la lista de cursos desde Firebase
-   */
-  async function loadCourses() {
-    console.log('Cargando cursos...');
-    try {
-      const cursosRef = ref(db, 'cursos');
-      onValue(cursosRef, (snapshot) => {
-        console.log('Datos de cursos recibidos', snapshot.val());
-        cursosList.innerHTML = '';
-        
-        if (!snapshot.exists()) {
-          cursosList.innerHTML = '<tr><td colspan="4">No hay cursos disponibles</td></tr>';
-          return;
+/**
+ * Cargar la lista de cursos desde Firebase
+ */
+async function loadCourses() {
+  console.log('Cargando cursos...');
+  try {
+    const cursosRef = ref(db, 'cursos');
+    onValue(cursosRef, (snapshot) => {
+      console.log('Datos de cursos recibidos', snapshot.val());
+      cursosList.innerHTML = '';
+
+      if (!snapshot.exists()) {
+        cursosList.innerHTML = '<tr><td colspan="4">No hay cursos disponibles</td></tr>';
+        return;
+      }
+
+      snapshot.forEach((childSnapshot) => {
+        const curso = childSnapshot.val();
+        const cursoId = childSnapshot.key;
+        console.log('Curso encontrado:', curso);
+
+        // Verifica si existen técnicos, de lo contrario agrega un técnico por defecto
+        if (!curso.tecnicos || !Array.isArray(curso.tecnicos) || curso.tecnicos.length === 0) {
+          curso.tecnicos = [{ nombre: 'Técnico no asignado', fechaVigencia: null }];
         }
 
-        snapshot.forEach((childSnapshot) => {
-          const curso = childSnapshot.val();
-          const cursoId = childSnapshot.key;
-          console.log('Curso encontrado:', curso);
-          
-          // Verifica si existen técnicos, de lo contrario agrega un técnico por defecto
-          if (!curso.tecnicos || !Array.isArray(curso.tecnicos) || curso.tecnicos.length === 0) {
-            curso.tecnicos = [{ nombre: 'Técnico no asignado', fechaVigencia: Date.now() }];
+        curso.tecnicos.forEach((tecnico, index) => {
+          const row = document.createElement('tr');
+
+          // Si es el primer técnico, añade las celdas de empresa y municipio con rowspan
+          if (index === 0) {
+            row.innerHTML = `
+              <td rowspan="${curso.tecnicos.length}">
+                <a href="detalle-empresa.html?id=${cursoId}">${curso.empresa || 'Sin Datos'}</a>
+              </td>
+              <td rowspan="${curso.tecnicos.length}">${curso.municipio || 'Sin Datos'}</td>
+            `;
           }
 
-          curso.tecnicos.forEach((tecnico, index) => {
-            const row = document.createElement('tr');
-            
-            // Si es el primer técnico, añade las celdas de empresa y municipio con rowspan
-            if (index === 0) {
-              row.innerHTML = `
-                <td rowspan="${curso.tecnicos.length}">
-                  <a href="detalle-empresa.html?id=${cursoId}">${curso.empresa || 'Sin Datos'}</a>
-                </td>
-                <td rowspan="${curso.tecnicos.length}">${curso.municipio || 'Sin Datos'}</td>
-              `;
-            }
-            
-            // Cálculo del color y etiqueta en función de la fecha de vigencia
-            const statusColor = getStatusColor(tecnico.fechaVigencia);
-            const statusLabel = getStatusLabel(tecnico.fechaVigencia);
-            
-            // Añadir la información del técnico y el estado del curso
-            row.innerHTML += `
-              <td>${tecnico.nombre || 'Sin Datos'}</td>
-              <td style="background-color: ${statusColor}; color: black; text-align: center;">
-                ${statusLabel}
-              </td>
-            `;
-            cursosList.appendChild(row);
-          });
+          // Manejo de la fecha de vigencia
+          const fechaVigencia = tecnico.fechaVigencia || null;
+          const statusColor = fechaVigencia ? getStatusColor(fechaVigencia) : 'white';
+          const statusLabel = fechaVigencia ? getStatusLabel(fechaVigencia) : 'Sin datos';
+
+          // Añadir la información del técnico y el estado del curso
+          row.innerHTML += `
+            <td>${tecnico.nombre || 'Sin Datos'}</td>
+            <td style="background-color: ${statusColor}; color: black; text-align: center;">
+              ${statusLabel}
+            </td>
+          `;
+          cursosList.appendChild(row);
         });
-        
-      }, (error) => {
-        console.error('Error al obtener cursos:', error);
       });
-    } catch (error) {
-      console.error('Error en loadCourses:', error);
-    }
+
+    }, (error) => {
+      console.error('Error al obtener cursos:', error);
+    });
+  } catch (error) {
+    console.error('Error en loadCourses:', error);
   }
+}
 
-  /**
-   * Determina el color del estado según la vigencia
-   * @param {string} fechaVigencia Fecha de vigencia del curso (formato ISO: YYYY-MM-DD)
-   * @returns {string} Color en formato CSS
-   */
-  function getStatusColor(fechaVigencia) {
-    const today = new Date();
-    const vencimiento = new Date(fechaVigencia); // Convierte la fecha en objeto Date
-    const diffTime = vencimiento - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Días de diferencia
-    console.log('Días de diferencia para la fecha de vigencia', diffDays);
+/**
+ * Determina el color del estado según la vigencia
+ * @param {string} fechaVigencia Fecha de vigencia del curso (formato ISO: YYYY-MM-DD)
+ * @returns {string} Color en formato CSS
+ */
+function getStatusColor(fechaVigencia) {
+  if (!fechaVigencia) return 'gray'; // Si no hay fecha, usa gris
 
-    if (diffDays < 0) return 'red'; // Vencido
-    if (diffDays <= 30) return 'yellow'; // Por vencer (menos de 1 mes)
-    return 'green'; // Vigente
-  }
+  const today = new Date();
+  const vencimiento = new Date(fechaVigencia); // Convierte la fecha en objeto Date
+  if (isNaN(vencimiento)) return 'gray'; // Si la fecha no es válida, usa gris
 
-  /**
-   * Obtiene la etiqueta de estado del curso
-   * @param {string} fechaVigencia Fecha de vigencia del curso (formato ISO: YYYY-MM-DD)
-   * @returns {string} Etiqueta de estado
-   */
-  function getStatusLabel(fechaVigencia) {
-    const today = new Date();
-    const vencimiento = new Date(fechaVigencia); // Convierte la fecha en objeto Date
-    const diffTime = vencimiento - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Días de diferencia
-    console.log('Días restantes para la vigencia:', diffDays);
+  const diffTime = vencimiento - today;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Días de diferencia
 
-    if (diffDays < 0) return 'Vencido';
-    if (diffDays <= 30) return 'Por vencer';
-    return 'Vigente';
-  }
+  console.log('Días de diferencia para la fecha de vigencia', diffDays);
+
+  if (diffDays < 0) return 'red'; // Vencido
+  if (diffDays <= 30) return 'yellow'; // Por vencer (menos de 1 mes)
+  return 'green'; // Vigente
+}
+
+/**
+ * Obtiene la etiqueta de estado del curso
+ * @param {string} fechaVigencia Fecha de vigencia del curso (formato ISO: YYYY-MM-DD)
+ * @returns {string} Etiqueta de estado
+ */
+function getStatusLabel(fechaVigencia) {
+  if (!fechaVigencia) return 'Sin dato'; // Si no hay fecha, mostrar "Sin dato"
+
+  const today = new Date();
+  const vencimiento = new Date(fechaVigencia); // Convierte la fecha en objeto Date
+  if (isNaN(vencimiento)) return 'Sin datos'; // Si la fecha no es válida, mostrar "Sin dato"
+
+  const diffTime = vencimiento - today;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Días de diferencia
+
+  console.log('Días restantes para la vigencia:', diffDays);
+
+  if (diffDays < 0) return 'Vencido';
+  if (diffDays <= 30) return 'Por vencer';
+  return 'Vigente';
+}
 
   /**
  * Mostrar advertencias de cursos vencidos
