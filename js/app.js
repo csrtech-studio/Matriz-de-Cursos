@@ -12,6 +12,15 @@ const storage = getStorage(app);
 
 export { db, auth, storage };
 
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    console.warn("Usuario no autenticado, redirigiendo a login...");
+    window.location.href = "login.html";
+  } else {
+    console.log("Usuario autenticado:", user);
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   const addCourseBtn = document.getElementById('add-course-btn');
   const cursosList = document.getElementById('cursos-list');
@@ -250,12 +259,15 @@ document.getElementById("borrar-btn").addEventListener("click", function() {
   }
 
   /**
-   * Mostrar advertencias de cursos vencidos
-   */
-  function showAdvertencias() {
-    console.log('Verificando advertencias...');
+ * Mostrar advertencias de cursos vencidos
+ */
+function showAdvertencias() {
+  console.log('Verificando advertencias...');
+  return new Promise((resolve, reject) => {
     try {
       const today = new Date();
+      let vencidosCount = 0;  // Contador de cursos vencidos
+      let proximosAVencerCount = 0;  // Contador de cursos próximos a vencer
 
       onValue(ref(db, 'cursos'), (snapshot) => {
         console.log('Datos de cursos para advertencias', snapshot.val());
@@ -263,6 +275,7 @@ document.getElementById("borrar-btn").addEventListener("click", function() {
 
         if (!snapshot.exists()) {
           advertenciasList.innerHTML = 'No hay cursos disponibles';
+          resolve({ vencidosCount, proximosAVencerCount }); // Resolver promesa con valores 0
           return;
         }
 
@@ -281,17 +294,17 @@ document.getElementById("borrar-btn").addEventListener("click", function() {
                 const item = document.createElement('div');
                 item.textContent = `Curso vencido: Técnico: ${tecnico.nombre || 'Desconocido'} - Empresa: ${curso.empresa || 'Desconocida'} - Fecha de Vencimiento: ${fechaVigencia.toLocaleDateString()}`;
                 advertenciasList.appendChild(item);
-                vencidosCount++;  // Actualizamos el contador global
+                vencidosCount++;  // Actualizamos el contador de cursos vencidos
               }
 
-              // Contar los técnicos cuyo curso está próximo a vencer (ej. 7 días)
+              // Contar los técnicos cuyo curso está próximo a vencer (ej. 30 días)
               const sieteDias = new Date(today);
               sieteDias.setDate(today.getDate() + 30);
               if (fechaVigencia > today && fechaVigencia <= sieteDias) {
                 const item = document.createElement('div');
                 item.textContent = `Curso próximo a vencer: Técnico: ${tecnico.nombre || 'Desconocido'} - Empresa: ${curso.empresa || 'Desconocida'} - Fecha de Vencimiento: ${fechaVigencia.toLocaleDateString()}`;
                 advertenciasList.appendChild(item);
-                proximosAVencerCount++;  // Actualizamos el contador global
+                proximosAVencerCount++;  // Actualizamos el contador de cursos próximos a vencer
               }
             });
           }
@@ -314,63 +327,113 @@ document.getElementById("borrar-btn").addEventListener("click", function() {
           console.log('No se detectaron advertencias');
         }
 
+        // Resolver la promesa con los contadores
+        resolve({ vencidosCount, proximosAVencerCount });
+
       }, (error) => {
         console.error('Error al obtener los datos de Firebase:', error);
+        reject(error);  // Rechazar la promesa si hay error
       });
     } catch (error) {
       console.error('Error en showAdvertencias:', error);
+      reject(error);  // Rechazar la promesa si ocurre un error
     }
-  }
-
-  // Llamar a las funciones
-  loadCourses();
-  showAdvertencias();
-
-  // Listener para el botón de logout
-  logoutBtn.addEventListener('click', () => {
-    signOut(auth)
-      .then(() => {
-        window.location.href = 'login.html';
-      })
-      .catch((error) => {
-        console.error('Error al cerrar sesión:', error);
-      });
   });
+}
 
-  // Listener para el botón de enviar correo
-  sendEmailBtn.addEventListener('click', () => {
-    Advertencias();
+// Llamar a las funciones
+loadCourses();
+showAdvertencias();
+
+// Listener para el botón de logout
+logoutBtn.addEventListener('click', () => {
+  signOut(auth)
+    .then(() => {
+      window.location.href = 'login.html';
+    })
+    .catch((error) => {
+      console.error('Error al cerrar sesión:', error);
+    });
+});
+
+// Listener para el botón de enviar correo
+sendEmailBtn.addEventListener('click', () => {
+  // Esperar a que las advertencias se hayan verificado antes de enviar el correo
+  showAdvertencias().then(({ vencidosCount, proximosAVencerCount }) => {
     sendEmail(vencidosCount, proximosAVencerCount);
+  }).catch((error) => {
+    console.error('Error al verificar las advertencias:', error);
   });
+});
 
-  /**
-   * Función para enviar correo
-   */
-  function sendEmail(vencidosCount, proximosAVencerCount) {
-    console.log('Enviando correo...', vencidosCount, proximosAVencerCount);
-    if (!emailjs) {
-        console.error('EmailJS no está definido. Verifica que la librería esté cargada correctamente.');
-        return;
-    }
+function sendEmail(vencidosCount, proximosAVencerCount) {
+  console.log('Enviando correo...', vencidosCount, proximosAVencerCount);
 
-    if (!vencidosCount && !proximosAVencerCount) {
-        console.warn('No hay cursos vencidos o próximos a vencer. No se enviará correo.');
-        return;
-    }
-
-    const templateParams = {
-        to_email: 'chernandez@purifika.com', // Cambia esto por la dirección de destino
-        subject: '⚠️ Advertencia: Cursos vencidos y próximos a vencer',
-        vencidosCount: vencidosCount || 0,  // Evita valores nulos
-        proximosAVencerCount: proximosAVencerCount || 0
-    };
-
-    emailjs.send('service_6ljnyyn', 'template_a12hj8f', templateParams)
-        .then((response) => {
-            console.log('Correo enviado:', response);
-        })
-        .catch((error) => {
-            console.error('Error al enviar el correo:', error);
-        });
+  if (!emailjs) {
+    console.error('EmailJS no está definido. Verifica que la librería esté cargada correctamente.');
+    return;
   }
+
+  if (!vencidosCount && !proximosAVencerCount) {
+    console.warn('No hay cursos vencidos o próximos a vencer. No se enviará correo.');
+    return;
+  }
+
+  const templateParams = {
+    to_email: 'chernandez@purifika.com', // Cambia esto por la dirección de destino
+    subject: '⚠️ Advertencia: Cursos vencidos y próximos a vencer',
+    vencidosCount: vencidosCount || 0,  // Evita valores nulos
+    proximosAVencerCount: proximosAVencerCount || 0
+  };
+
+  emailjs.send('service_6ljnyyn', 'template_c0y04xh', templateParams)
+    .then((response) => {
+      console.log('Correo enviado:', response);
+
+      // Crear un mensaje visual de éxito
+      const message = document.createElement('div');
+      message.textContent = 'Correo enviado exitosamente!';
+      message.style.position = 'fixed';
+      message.style.top = '50%';
+      message.style.left = '50%';
+      message.style.transform = 'translate(-50%, -50%)';
+      message.style.padding = '20px 40px';
+      message.style.backgroundColor = '#2ecc71';
+      message.style.color = '#fff';
+      message.style.borderRadius = '10px';
+      message.style.fontSize = '18px';
+      message.style.zIndex = '9999';
+      message.style.textAlign = 'center';
+      document.body.appendChild(message);
+
+      // Elimina el mensaje después de 3 segundos
+      setTimeout(() => {
+        message.remove();
+      }, 3000);
+    })
+    .catch((error) => {
+      console.error('Error al enviar el correo:', error);
+
+      // Mensaje de error
+      const errorMessage = document.createElement('div');
+      errorMessage.textContent = 'Hubo un error al enviar el correo.';
+      errorMessage.style.position = 'fixed';
+      errorMessage.style.top = '50%';
+      errorMessage.style.left = '50%';
+      errorMessage.style.transform = 'translate(-50%, -50%)';
+      errorMessage.style.padding = '20px 40px';
+      errorMessage.style.backgroundColor = '#e74c3c';
+      errorMessage.style.color = '#fff';
+      errorMessage.style.borderRadius = '10px';
+      errorMessage.style.fontSize = '18px';
+      errorMessage.style.zIndex = '9999';
+      errorMessage.style.textAlign = 'center';
+      document.body.appendChild(errorMessage);
+
+      // Elimina el mensaje después de 3 segundos
+      setTimeout(() => {
+        errorMessage.remove();
+      }, 3000);
+    });
+}
 });

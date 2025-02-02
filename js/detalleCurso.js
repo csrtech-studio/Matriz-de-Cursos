@@ -1,9 +1,20 @@
 import { db } from './app.js';
 import { ref, get, update, remove } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
 
+const auth = getAuth();
 // Obtener el ID del curso desde la URL
 const urlParams = new URLSearchParams(window.location.search);
 const cursoId = urlParams.get('id');
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    console.warn("Usuario no autenticado, redirigiendo a login...");
+    window.location.href = "login.html";
+  } else {
+    console.log("Usuario autenticado:", user);
+  }
+});
 
 // Cargar los detalles del curso y mostrar técnicos en una tabla
 function loadCourseDetails() {

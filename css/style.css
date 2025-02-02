@@ -276,13 +276,6 @@ input {
 }
 
 /* Botones */
-button {
-  padding: 8px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
 
 /* Botón de buscar */
 #buscar-btn {
@@ -295,3 +288,4 @@ button {
   background-color: #dc3545;
   color: white;
 }
+

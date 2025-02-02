@@ -2,12 +2,22 @@
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 import { firebaseConfig } from './firebaseConfig.js';
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    console.warn("Usuario no autenticado, redirigiendo a login...");
+    window.location.href = "login.html";
+  } else {
+    console.log("Usuario autenticado:", user);
+  }
+});
 
 // Obtener el formulario y los campos
 const addUserForm = document.getElementById('add-user-form');
