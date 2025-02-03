@@ -23,6 +23,7 @@ onAuthStateChanged(auth, async (user) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   const addCourseBtn = document.getElementById('add-course-btn');
+  const addUserBtn = document.getElementById('add-user-btn')
   const cursosList = document.getElementById('cursos-list');
   const advertenciasList = document.getElementById('advertencias-list');
   const logoutBtn = document.getElementById('logout');
@@ -34,6 +35,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (addCourseBtn) {
     addCourseBtn.addEventListener('click', () => {
       window.location.href = 'agregarCurso.html';
+    });
+  }
+
+  if(addUserBtn){
+    addUserBtn.addEventListener('click',() => {
+      window.location.href ='agregarUsuario.html';
     });
   }
 
